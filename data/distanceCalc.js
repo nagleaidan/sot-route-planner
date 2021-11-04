@@ -6,7 +6,7 @@ const pythagoras = (x1, x2, y1, y2) =>
   Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 
 const islands = JSON.parse(
-  fs.readFileSync("./public/data/islands.json")
+  fs.readFileSync("./islands.json")
 ).islands;
 
 const pairs = new comb.Combination(islands, 2).toArray();
@@ -19,17 +19,17 @@ const distances = pairs.map(
 );
 
 fs.writeFileSync(
-  "./public/data/distances.json",
+  "./distances.json",
   JSON.stringify({ distances: distances })
 );
 
 /*
 A "one-liner" version of the above code bc I think it's funny
 fs.writeFileSync(
-  "./public/data/distances.json",
+  "./distances.json",
   JSON.stringify({
     distances: new comb.Combination(
-      JSON.parse(fs.readFileSync("./public/data/islands.json")).islands,
+      JSON.parse(fs.readFileSync("./islands.json")).islands,
       2
     )
       .toArray()
