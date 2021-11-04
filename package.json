@@ -1,0 +1,9 @@
+{
+  "name": "sot-route-planner",
+  "version": "1.0.0",
+  "author": "nagleaidan",
+  "license": "MIT",
+  "dependencies": {
+    "js-combinatorics": "^1.5.4"
+  }
+}
