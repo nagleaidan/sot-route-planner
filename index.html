@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- p5.js -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"
+      integrity="sha512-N4kV7GkNv7QR7RX9YF/olywyIgIwNvfEe2nZtfyj73HdjCUkAfOBDbcuJ/cTaN04JKRnw1YG1wnUyNKMsNgg3g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body style="width: 100vw; height: 100vh; overflow: hidden">
+    <div class="container" style="max-width: unset; padding: 0">
+      <div class="row no-gutters">
+        <div class="col-8">
+          <div class="row no-gutters">
+            <header class="col">island name</header>
+          </div>
+          <div class="row no-gutters">
+            <main class="col"></main>
+          </div>
+        </div>
+        <aside class="col-4" style="padding: 1rem; border-left: 1px solid red">
+          <form>
+            <div class="form-group">
+              <label for="start">Starting Island <em>(optional)</em></label>
+              <select class="form-control" id="start">
+                <option value="-1"></option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="island">Add an Island to the Route</label>
+              <div class="input-group">
+                <select class="custom-select" id="island"></select>
+                <div class="input-group-append">
+                  <button
+                    id="add-island"
+                    class="btn btn-outline-secondary"
+                    type="button"
+                  >
+                    Add Island
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="end">Ending Island <em>(optional)</em></label>
+              <select class="form-control" id="end">
+                <option value="-1"></option>
+              </select>
+            </div>
+            <button id="submit" type="submit" class="btn btn-primary">
+              Calculate Route
+            </button>
+          </form>
+        </aside>
+      </div>
+    </div>
+
+    <!-- custom JS -->
+    <script src="sketch.js"></script>
+
+    <!-- Bootstrap JS -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
