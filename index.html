@@ -16,6 +16,12 @@
       referrerpolicy="no-referrer"
     ></script>
 
+    <!-- js-combinatorics -->
+    <script type="module">
+      import * as $C from 'https://cdn.jsdelivr.net/npm/js-combinatorics@1.5.4/combinatorics.min.js';
+      window.Combinatorics = $C;
+    </script>
+
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -36,7 +42,7 @@
           </div>
         </div>
         <aside class="col-4" style="padding: 1rem; border-left: 1px solid red">
-          <form>
+          <form onsubmit="submitForm(event)">
             <div class="form-group">
               <label for="start">Starting Island <em>(optional)</em></label>
               <select class="form-control" id="start">
