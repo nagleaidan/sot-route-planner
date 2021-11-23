@@ -18,7 +18,10 @@ function preload() {
     setSelectOptions();
     return res;
   });
-  loadJSON('data/distances.json', res => (distances = res.distances));
+  loadJSON(
+    'data/distances.json',
+    res => (distances = processDistances(res.distances))
+  );
 }
 
 function setup() {
@@ -75,7 +78,6 @@ function submitForm(event) {
   const start = startSelect.value;
   const islands = selectedIslands;
   const end = endSelect.value;
-  console.log(start, islands, end);
   startCalculation(start, islands, end);
 }
 
@@ -85,7 +87,7 @@ function submitForm(event) {
 
 function startCalculation(start, islands, end) {
   const routes = generateRoutes(start, islands, end);
-  console.log(routes);
+  crunch(routes);
 }
 
 function generateRoutes(start, islands, end) {
@@ -95,28 +97,66 @@ function generateRoutes(start, islands, end) {
   if (end != -1) {
     islands.delete(end);
   }
-  let routes = new Combinatorics.Permutation(islands).toArray();
+  let routes = new Combinatorics.Permutation(
+    Array.from(islands).map(Number)
+  ).toArray();
   if (start != -1) {
     routes = routes.map(route => {
-      route.unshift(start);
+      route.unshift(parseInt(start));
       return route;
     });
   }
   if (end != -1) {
     routes = routes.map(route => {
-      route.push(end);
+      route.push(parseInt(end));
       return route;
     });
   }
   return routes;
 }
 
+function crunch(routes) {
+  let minDistance = Infinity;
+  let minRoute = [];
+  routes.forEach(route => {
+    const d = calculateRouteDistance(route);
+    if (d < minDistance) {
+      minRoute = route;
+      minDistance = d;
+    }
+  });
+  console.log(minRoute, minDistance);
+}
+
+function calculateRouteDistance(route) {
+  let distance = 0;
+  for (let i = 0; i < route.length - 1; i++) {
+    distance += getDistance(
+      Math.min(route[i], route[i + 1]),
+      Math.max(route[i], route[i + 1])
+    );
+  }
+  return distance;
+}
+
 // helper functions
+
+function processDistances(array) {
+  const distances = new Map();
+  array.forEach(islandA => {
+    const temp = new Map();
+    islandA.islands.forEach(islandB => {
+      temp.set(islandB.b, islandB.distance);
+    });
+    distances.set(islandA.a, temp);
+  });
+  return distances;
+}
 
 function sortAlphabetically(array, property) {
   return array.sort((a, b) => a[property].localeCompare(b[property]));
 }
 
-function pythagoras(x1, x2, y1, y2) {
-  return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+function getDistance(a, b) {
+  return distances.get(a).get(b);
 }
