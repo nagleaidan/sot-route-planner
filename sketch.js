@@ -1,5 +1,11 @@
 // variables
-let islands, distances, outposts;
+let islands,
+  distances,
+  outposts,
+  islandMap,
+  bestRoute,
+  bestDistance,
+  oldBestRoute;
 const selectedIslands = new Set();
 // html elements
 const main = document.getElementsByTagName('main')[0],
@@ -19,6 +25,7 @@ function preload() {
   loadJSON('data/islands.json', res => {
     islands = sortAlphabetically(res.islands, 'name');
     outposts = islands.filter(island => island.type === 'Outpost');
+    islandMap = new Map(islands.map(island => [island.id, island]));
     setSelectOptions();
     return res;
   });
@@ -35,6 +42,23 @@ function setup() {
 }
 
 function draw() {
+  if (bestRoute) {
+    if (arraysEqual(bestRoute, oldBestRoute)) {
+      clear();
+    } else {
+      oldBestRoute = [...bestRoute];
+    }
+    stroke('black');
+    strokeWeight(2);
+    for (let i = 0; i < bestRoute.length - 1; i++) {
+      const islandA = islandMap.get(bestRoute[i]);
+      const islandB = islandMap.get(bestRoute[i + 1]);
+      line(
+        ...normalizeCoords(islandA.x, islandA.y),
+        ...normalizeCoords(islandB.x, islandB.y)
+      );
+    }
+  }
   islands.forEach(island => {
     const [x, y] = normalizeCoords(island.x, island.y);
     switch (island.type) {
@@ -135,7 +159,8 @@ function submitForm(event) {
 
 function startCalculation(start, islands, end) {
   const routes = generateRoutes(start, islands, end);
-  crunch(routes);
+  [bestRoute, bestDistance] = crunch(routes);
+  console.log(bestRoute, bestDistance);
   console.log(start != -1 || end != -1 ? 'order needed' : 'can reverse');
 }
 
@@ -174,7 +199,7 @@ function crunch(routes) {
       minDistance = d;
     }
   });
-  console.log(minRoute, minDistance);
+  return [minRoute, minDistance];
 }
 
 function calculateRouteDistance(route) {
@@ -217,4 +242,14 @@ function getCanvasSize() {
 function normalizeCoords(x, y) {
   // 26 grid squares in the map, each is 10 units across
   return [x, y].map(coord => (coord * height) / 260);
+}
+
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
 }
