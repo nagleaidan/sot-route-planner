@@ -29,19 +29,22 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+
+    <!-- My CSS-->
+    <link rel="stylesheet" href="style.css" />
   </head>
-  <body style="width: 100vw; height: 100vh; overflow: hidden">
-    <div class="container" style="max-width: unset; padding: 0">
+  <body>
+    <div id="grid" class="container">
       <div class="row no-gutters">
         <div class="col-8">
           <div class="row no-gutters">
             <header class="col">island name</header>
           </div>
           <div class="row no-gutters">
-            <main class="col"></main>
+            <main id="main" class="col"></main>
           </div>
         </div>
-        <aside class="col-4" style="padding: 1rem; border-left: 1px solid red">
+        <aside id="aside" class="col-4">
           <form onsubmit="submitForm(event)">
             <div class="form-group">
               <label for="start">Starting Island <em>(optional)</em></label>
@@ -52,7 +55,7 @@
             <div class="form-group">
               <label for="island"
                 >Add an Island to the Route
-                <em>(click item to remove)</em></label
+                <em>(click island to remove)</em></label
               >
               <div class="input-group">
                 <select class="custom-select" id="island"></select>

@@ -2,6 +2,7 @@
 let islands, distances, outposts;
 const selectedIslands = new Set();
 // html elements
+const main = document.getElementsByTagName('main')[0];
 const startSelect = document.getElementById('start');
 const islandSelect = document.getElementById('island');
 const islandButton = document.getElementById('add-island');
@@ -26,11 +27,16 @@ function preload() {
 
 function setup() {
   background('#0096FF');
+  const size = getCanvasSize();
+  createCanvas(size, size);
 }
 
 function draw() {}
 
-function windowResized() {}
+function windowResized() {
+  const size = getCanvasSize();
+  resizeCanvas(size, size);
+}
 
 // form functions
 
@@ -159,4 +165,8 @@ function sortAlphabetically(array, property) {
 
 function getDistance(a, b) {
   return distances.get(a).get(b);
+}
+
+function getCanvasSize() {
+  return Math.min(main.clientWidth, main.clientHeight) - 10;
 }
