@@ -136,6 +136,7 @@ function submitForm(event) {
 function startCalculation(start, islands, end) {
   const routes = generateRoutes(start, islands, end);
   crunch(routes);
+  console.log(start != -1 || end != -1 ? 'order needed' : 'can reverse');
 }
 
 function generateRoutes(start, islands, end) {
@@ -215,5 +216,5 @@ function getCanvasSize() {
 
 function normalizeCoords(x, y) {
   // 26 grid squares in the map, each is 10 units across
-  return [x, y].map(coord => (coord * width) / 260);
+  return [x, y].map(coord => (coord * height) / 260);
 }
