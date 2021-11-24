@@ -161,7 +161,9 @@ function startCalculation(start, islands, end) {
   const routes = generateRoutes(start, islands, end);
   [bestRoute, bestDistance] = crunch(routes);
   console.log(bestRoute, bestDistance);
-  console.log(start != -1 || end != -1 ? 'order needed' : 'can reverse');
+  console.log(
+    start != end && (start != -1 || end != -1) ? 'order needed' : 'can reverse'
+  );
 }
 
 function generateRoutes(start, islands, end) {
