@@ -2,13 +2,16 @@
 let islands, distances, outposts;
 const selectedIslands = new Set();
 // html elements
-const main = document.getElementsByTagName('main')[0];
-const startSelect = document.getElementById('start');
-const islandSelect = document.getElementById('island');
-const islandButton = document.getElementById('add-island');
-const islandList = document.getElementById('island-list');
-const endSelect = document.getElementById('end');
-const submitButton = document.getElementById('submit');
+const main = document.getElementsByTagName('main')[0],
+  startSelect = document.getElementById('start'),
+  islandSelect = document.getElementById('island'),
+  islandButton = document.getElementById('add-island'),
+  islandList = document.getElementById('island-list'),
+  endSelect = document.getElementById('end'),
+  submitButton = document.getElementById('submit');
+// colors
+const BLUE = '#0096FF';
+const GREEN = '#26532B';
 
 // p5.js functions
 
@@ -26,12 +29,51 @@ function preload() {
 }
 
 function setup() {
-  background('#0096FF');
+  background(BLUE);
   const size = getCanvasSize();
   createCanvas(size, size);
 }
 
-function draw() {}
+function draw() {
+  islands.forEach(island => {
+    const [x, y] = normalizeCoords(island.x, island.y);
+    switch (island.type) {
+      case 'Small':
+        fill(GREEN);
+        noStroke();
+        circle(x, y, 10);
+        break;
+      case 'Large':
+        fill(GREEN);
+        noStroke();
+        circle(x, y, 20);
+        break;
+      case 'Massive':
+        fill(GREEN);
+        noStroke();
+        circle(x, y, 40);
+        break;
+      case 'Outpost':
+        fill('#f00');
+        noStroke();
+        circle(x, y, 20);
+        break;
+      case 'Seapost':
+        fill('#fff');
+        noStroke();
+        circle(x, y, 20);
+        break;
+      case 'Fortress':
+        fill('#000');
+        noStroke();
+        circle(x, y, 20);
+        break;
+      default:
+        console.error('island data is fucked', island);
+        break;
+    }
+  });
+}
 
 function windowResized() {
   const size = getCanvasSize();
@@ -169,4 +211,9 @@ function getDistance(a, b) {
 
 function getCanvasSize() {
   return Math.min(main.clientWidth, main.clientHeight) - 10;
+}
+
+function normalizeCoords(x, y) {
+  // 26 grid squares in the map, each is 10 units across
+  return [x, y].map(coord => (coord * width) / 260);
 }
