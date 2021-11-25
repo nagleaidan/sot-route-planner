@@ -1,4 +1,5 @@
 // variables
+
 let islands,
   distances,
   outposts,
@@ -8,16 +9,24 @@ let islands,
   oldBestRoute,
   closestIsland;
 const selectedIslands = new Set();
+let startOutpost = false,
+  endOutpost = false;
+
 // html elements
+
 const main = document.getElementsByTagName('main')[0],
   islandName = document.getElementById('island-name'),
   startSelect = document.getElementById('start'),
+  startOutpostButton = document.getElementById('start-outpost'),
   islandSelect = document.getElementById('island'),
   islandButton = document.getElementById('add-island'),
   islandList = document.getElementById('island-list'),
   endSelect = document.getElementById('end'),
+  endOutpostButton = document.getElementById('end-outpost'),
   submitButton = document.getElementById('submit');
+
 // colors
+
 const BLUE = '#0096FF';
 const GREEN = '#26532B';
 const BROWN = '#964B00';
@@ -134,6 +143,31 @@ function setSelectOptions() {
     islandSelect.append(element.cloneNode(true));
     endSelect.append(element);
   });
+}
+
+function startAnyOutpost() {
+  if (startOutpost) {
+    startOutpost = false;
+    startOutpostButton.classList.remove('active');
+    startSelect.disabled = false;
+  } else {
+    startOutpost = true;
+    startOutpostButton.classList.add('active');
+    startSelect.value = -1;
+    startSelect.disabled = true;
+  }
+}
+function endAnyOutpost() {
+  if (endOutpost) {
+    endOutpost = false;
+    endOutpostButton.classList.remove('active');
+    endSelect.disabled = false;
+  } else {
+    endOutpost = true;
+    endOutpostButton.classList.add('active');
+    endSelect.value = -1;
+    endSelect.disabled = true;
+  }
 }
 
 function addIsland() {
