@@ -9,8 +9,8 @@ let islands,
   oldBestRoute,
   closestIsland;
 const selectedIslands = new Set();
-let startOutpost = false,
-  endOutpost = false;
+let startAtOutpost = false,
+  endAtOutpost = false;
 
 // html elements
 
@@ -98,6 +98,9 @@ function draw() {
       case 'Fortress':
         skull(x, y, size * 1.5);
         break;
+      case 'Reaper':
+        heart(x, y, size * 1.5);
+        break;
       default:
         console.error('island data is fucked', island);
         break;
@@ -113,7 +116,7 @@ function windowResized() {
 function mouseMoved() {
   if (mouseX <= width && mouseX >= 0 && mouseY <= height && mouseY >= 0) {
     const distancesFromMouse = new Map(
-      islands.map(island => [
+      islands?.map(island => [
         dist(mouseX, mouseY, ...normalizeCoords(island.x, island.y)),
         island.id,
       ])
@@ -146,24 +149,24 @@ function setSelectOptions() {
 }
 
 function startAnyOutpost() {
-  if (startOutpost) {
-    startOutpost = false;
+  if (startAtOutpost) {
+    startAtOutpost = false;
     startOutpostButton.classList.remove('active');
     startSelect.disabled = false;
   } else {
-    startOutpost = true;
+    startAtOutpost = true;
     startOutpostButton.classList.add('active');
     startSelect.value = -1;
     startSelect.disabled = true;
   }
 }
 function endAnyOutpost() {
-  if (endOutpost) {
-    endOutpost = false;
+  if (endAtOutpost) {
+    endAtOutpost = false;
     endOutpostButton.classList.remove('active');
     endSelect.disabled = false;
   } else {
-    endOutpost = true;
+    endAtOutpost = true;
     endOutpostButton.classList.add('active');
     endSelect.value = -1;
     endSelect.disabled = true;
@@ -258,6 +261,16 @@ function fish(x, y, size) {
   ellipse(x + (size * 2) / 5, y, size / 5, size / 5);
 }
 
+function heart(x, y, size) {
+  noStroke();
+  fill('red');
+  beginShape();
+  vertex(x, y);
+  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
+  bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
+  endShape(CLOSE);
+}
+
 function skull(x, y, size) {
   const skullWidth = (size * 6) / 5;
   const skullHeight = size;
@@ -319,6 +332,16 @@ function generateRoutes(start, islands, end) {
       route.push(parseInt(end));
       return route;
     });
+  }
+  if (startAtOutpost) {
+    routes = routes
+      .map(route => outposts.map(outpost => [outpost.id, ...route]))
+      .flat();
+  }
+  if (endAtOutpost) {
+    routes = routes
+      .map(route => outposts.map(outpost => [...route, outpost.id]))
+      .flat();
   }
   return routes;
 }

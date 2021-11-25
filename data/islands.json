@@ -318,7 +318,7 @@
       "y": 39,
       "id": 83
     },
-    { "name": "Thieve's Haven", "type": "Large", "x": 120, "y": 193, "id": 84 },
+    { "name": "Thieves' Haven", "type": "Large", "x": 120, "y": 193, "id": 84 },
     {
       "name": "Three Paces East Seapost",
       "type": "Seapost",
@@ -369,7 +369,7 @@
     },
     {
       "name": "Reaper's Hideout",
-      "type": "Outpost",
+      "type": "Reaper",
       "x": 86,
       "y": 118,
       "id": 93
