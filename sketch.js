@@ -18,6 +18,8 @@ const main = document.getElementsByTagName('main')[0],
 // colors
 const BLUE = '#0096FF';
 const GREEN = '#26532B';
+const BROWN = '#964B00';
+const YELLOW = '#FFA400';
 
 // p5.js functions
 
@@ -61,36 +63,31 @@ function draw() {
   }
   islands.forEach(island => {
     const [x, y] = normalizeCoords(island.x, island.y);
+    const size = (height / 70) | 0;
     switch (island.type) {
       case 'Small':
         fill(GREEN);
         noStroke();
-        circle(x, y, 10);
+        circle(x, y, size);
         break;
       case 'Large':
         fill(GREEN);
         noStroke();
-        circle(x, y, 20);
+        circle(x, y, size * 2);
         break;
       case 'Massive':
         fill(GREEN);
         noStroke();
-        circle(x, y, 40);
+        circle(x, y, size * 4);
         break;
       case 'Outpost':
-        fill('#f00');
-        noStroke();
-        circle(x, y, 20);
+        barrel(x, y, size);
         break;
       case 'Seapost':
-        fill('#fff');
-        noStroke();
-        circle(x, y, 20);
+        fish(x, y, size * 1, 5);
         break;
       case 'Fortress':
-        fill('#000');
-        noStroke();
-        circle(x, y, 20);
+        skull(x, y, size * 1.5);
         break;
       default:
         console.error('island data is fucked', island);
@@ -154,6 +151,85 @@ function submitForm(event) {
 }
 
 // drawing functions
+
+function barrel(x, y, size) {
+  ySize = size;
+  xSize = (size * 2) / 3;
+  rectMode(RADIUS);
+  fill(BROWN);
+  stroke(BROWN);
+  rect(x, y, xSize, ySize);
+  curve(
+    x + xSize,
+    y - ySize,
+    x - xSize,
+    y - ySize,
+    x - xSize,
+    y + ySize,
+    x + xSize,
+    y + ySize
+  );
+  curve(
+    x - xSize,
+    y - ySize,
+    x + xSize,
+    y - ySize,
+    x + xSize,
+    y + ySize,
+    x - xSize,
+    y + ySize
+  );
+  fill(0);
+  noStroke();
+  rect(x, y - (ySize * 5) / 7, xSize * 1.2, ySize / 10, 10, 10, 0, 0);
+  rect(x, y + (ySize * 5) / 7, xSize * 1.2, ySize / 10, 0, 0, 10, 10);
+}
+
+function fish(x, y, size) {
+  fill('darkgoldenrod');
+  x += size / 4;
+  noStroke();
+  ellipse(x, y, size * 2, size);
+  triangle(
+    x - (size * 3) / 5,
+    y,
+    x - (size * 8) / 5,
+    y - (size * 3) / 5,
+    x - (size * 8) / 5,
+    y + (size * 3) / 5
+  );
+  fill(0);
+  ellipse(x + (size * 2) / 5, y, size / 5, size / 5);
+}
+
+function skull(x, y, size) {
+  const skullWidth = (size * 6) / 5;
+  const skullHeight = size;
+  fill(255);
+  noStroke();
+  rectMode(CORNER);
+  ellipse(x, y, skullWidth, skullHeight);
+  rect(
+    x - skullWidth / 4,
+    y + skullHeight / 4,
+    skullWidth / 2,
+    skullHeight / 2
+  );
+  fill(0);
+  const eyeSpacing = skullWidth / 4;
+  const eyeWidth = skullWidth / 6;
+  const eyeHeight = skullHeight / 4;
+  ellipse(x - eyeSpacing, y, eyeWidth, eyeHeight);
+  ellipse(x + eyeSpacing, y, eyeWidth, eyeHeight);
+
+  const teethWidth = skullWidth / 30;
+  const teethHeight = skullHeight / 4;
+  const teethTop = y + skullHeight / 2;
+  const teethSpacing = skullWidth / 6;
+  rect(x - teethSpacing, teethTop, teethWidth, teethHeight);
+  rect(x, teethTop, teethWidth, teethHeight);
+  rect(x + teethSpacing, teethTop, teethWidth, teethHeight);
+}
 
 // calculation functions
 

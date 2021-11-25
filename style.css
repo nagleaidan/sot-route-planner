@@ -9,6 +9,13 @@ body {
   padding: 0;
 }
 
+#header {
+  background-color: darkgoldenrod;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #main {
   background-color: #0096ff;
   height: calc(
@@ -19,13 +26,8 @@ body {
   justify-content: center;
 }
 
-#main > canvas {
-  border: 1px solid red;
-}
-
 #aside {
   padding: 1rem;
-  border-left: 1px solid red;
   height: 100vh;
   max-height: 100vh;
   overflow-y: auto;
