@@ -5,10 +5,12 @@ let islands,
   islandMap,
   bestRoute,
   bestDistance,
-  oldBestRoute;
+  oldBestRoute,
+  closestIsland;
 const selectedIslands = new Set();
 // html elements
 const main = document.getElementsByTagName('main')[0],
+  islandName = document.getElementById('island-name'),
   startSelect = document.getElementById('start'),
   islandSelect = document.getElementById('island'),
   islandButton = document.getElementById('add-island'),
@@ -19,7 +21,6 @@ const main = document.getElementsByTagName('main')[0],
 const BLUE = '#0096FF';
 const GREEN = '#26532B';
 const BROWN = '#964B00';
-const YELLOW = '#FFA400';
 
 // p5.js functions
 
@@ -45,20 +46,19 @@ function setup() {
 
 function draw() {
   if (bestRoute) {
-    if (arraysEqual(bestRoute, oldBestRoute)) {
+    if (!arraysEqual(bestRoute, oldBestRoute)) {
       clear();
-    } else {
       oldBestRoute = [...bestRoute];
-    }
-    stroke('black');
-    strokeWeight(2);
-    for (let i = 0; i < bestRoute.length - 1; i++) {
-      const islandA = islandMap.get(bestRoute[i]);
-      const islandB = islandMap.get(bestRoute[i + 1]);
-      line(
-        ...normalizeCoords(islandA.x, islandA.y),
-        ...normalizeCoords(islandB.x, islandB.y)
-      );
+      stroke('black');
+      strokeWeight(2);
+      for (let i = 0; i < bestRoute.length - 1; i++) {
+        const islandA = islandMap.get(bestRoute[i]);
+        const islandB = islandMap.get(bestRoute[i + 1]);
+        line(
+          ...normalizeCoords(islandA.x, islandA.y),
+          ...normalizeCoords(islandB.x, islandB.y)
+        );
+      }
     }
   }
   islands.forEach(island => {
@@ -99,6 +99,28 @@ function draw() {
 function windowResized() {
   const size = getCanvasSize();
   resizeCanvas(size, size);
+}
+
+function mouseMoved() {
+  if (mouseX <= width && mouseX >= 0 && mouseY <= height && mouseY >= 0) {
+    const distancesFromMouse = new Map(
+      islands.map(island => [
+        dist(mouseX, mouseY, ...normalizeCoords(island.x, island.y)),
+        island.id,
+      ])
+    );
+    const distance = Math.min(...distancesFromMouse.keys());
+    if (distance < 15) {
+      const currentClosestIsland = distancesFromMouse.get(distance);
+      if (currentClosestIsland !== closestIsland) {
+        closestIsland = currentClosestIsland;
+        islandName.textContent = islandMap.get(closestIsland).name;
+      }
+    } else {
+      closestIsland = null;
+      islandName.textContent = '';
+    }
+  }
 }
 
 // form functions
@@ -326,7 +348,7 @@ function arraysEqual(a, b) {
   if (a === b) return true;
   if (a == null || b == null) return false;
   if (a.length !== b.length) return false;
-  for (var i = 0; i < a.length; ++i) {
+  for (i in a) {
     if (a[i] !== b[i]) return false;
   }
   return true;
