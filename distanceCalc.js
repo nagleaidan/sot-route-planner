@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const fs = require('fs');
-const comb = require('js-combinatorics');
 
 const pythagoras = (x1, x2, y1, y2) =>
   Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
