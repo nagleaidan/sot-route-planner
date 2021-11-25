@@ -18,7 +18,7 @@
       "id": 4
     },
     {
-      "name": "Blind Mans Lagoon",
+      "name": "Blind Man's Lagoon",
       "type": "Small",
       "x": 140,
       "y": 54,
@@ -39,7 +39,7 @@
     { "name": "Chicken Isle", "type": "Small", "x": 85, "y": 151, "id": 12 },
     { "name": "Cinder Islet", "type": "Small", "x": 205, "y": 126, "id": 13 },
     { "name": "Crescent Isle", "type": "Large", "x": 20, "y": 97, "id": 14 },
-    { "name": "Crooks Hollow", "type": "Large", "x": 129, "y": 153, "id": 15 },
+    { "name": "Crook's Hollow", "type": "Large", "x": 129, "y": 153, "id": 15 },
     {
       "name": "Cursewater Shores",
       "type": "Small",
@@ -55,10 +55,10 @@
       "y": 70,
       "id": 18
     },
-    { "name": "Devils Ridge", "type": "Large", "x": 156, "y": 188, "id": 19 },
+    { "name": "Devil's Ridge", "type": "Large", "x": 156, "y": 188, "id": 19 },
     { "name": "Discovery Ridge", "type": "Large", "x": 43, "y": 163, "id": 20 },
-    { "name": "Fetchers Rest", "type": "Large", "x": 215, "y": 115, "id": 21 },
-    { "name": "Flames End", "type": "Small", "x": 217, "y": 189, "id": 22 },
+    { "name": "Fetcher's Rest", "type": "Large", "x": 215, "y": 115, "id": 21 },
+    { "name": "Flame's End", "type": "Small", "x": 217, "y": 189, "id": 22 },
     {
       "name": "Flintlock Peninsula",
       "type": "Large",
@@ -68,7 +68,7 @@
     },
     { "name": "Fools Lagoon", "type": "Small", "x": 87, "y": 136, "id": 24 },
     {
-      "name": "Galleons Grave Outpost",
+      "name": "Galleon's Grave Outpost",
       "type": "Outpost",
       "x": 176,
       "y": 73,
@@ -110,7 +110,7 @@
       "y": 53,
       "id": 31
     },
-    { "name": "Krakens Fall", "type": "Large", "x": 175, "y": 120, "id": 32 },
+    { "name": "Kraken's Fall", "type": "Large", "x": 175, "y": 120, "id": 32 },
     {
       "name": "Lagoon Of Whispers",
       "type": "Small",
@@ -118,7 +118,13 @@
       "y": 119,
       "id": 33
     },
-    { "name": "Liars Backbone", "type": "Small", "x": 185, "y": 103, "id": 34 },
+    {
+      "name": "Liar's Backbone",
+      "type": "Small",
+      "x": 185,
+      "y": 103,
+      "id": 34
+    },
     { "name": "Lone Cove", "type": "Large", "x": 76, "y": 55, "id": 35 },
     { "name": "Lonely Isle", "type": "Small", "x": 70, "y": 73, "id": 36 },
     { "name": "Lookout Point", "type": "Small", "x": 90, "y": 194, "id": 37 },
@@ -129,10 +135,10 @@
       "y": 168,
       "id": 38
     },
-    { "name": "Magmas Tide", "type": "Small", "x": 247, "y": 199, "id": 39 },
-    { "name": "Marauders Arch", "type": "Large", "x": 165, "y": 29, "id": 40 },
+    { "name": "Magma's Tide", "type": "Small", "x": 247, "y": 199, "id": 39 },
+    { "name": "Marauder's Arch", "type": "Large", "x": 165, "y": 29, "id": 40 },
     {
-      "name": "Mermaids Hideaway",
+      "name": "Mermaid's Hideaway",
       "type": "Large",
       "x": 20,
       "y": 137,
@@ -146,7 +152,7 @@
       "id": 42
     },
     {
-      "name": "Morrows Peak Outpost",
+      "name": "Morrow's Peak Outpost",
       "type": "Outpost",
       "x": 217,
       "y": 165,
@@ -178,7 +184,7 @@
     },
     { "name": "Plunder Valley", "type": "Large", "x": 63, "y": 154, "id": 50 },
     {
-      "name": "Plunderers Plight",
+      "name": "Plunderer's Plight",
       "type": "Small",
       "x": 167,
       "y": 55,
@@ -195,9 +201,9 @@
     },
     { "name": "Ruby's Fall", "type": "Large", "x": 244, "y": 156, "id": 55 },
     { "name": "Rum Runner Isle", "type": "Small", "x": 79, "y": 88, "id": 56 },
-    { "name": "Sailors Bounty", "type": "Large", "x": 22, "y": 39, "id": 57 },
+    { "name": "Sailor's Bounty", "type": "Large", "x": 22, "y": 39, "id": 57 },
     {
-      "name": "Sailors Knot Stronghold",
+      "name": "Sailor's Knot Stronghold",
       "type": "Fortress",
       "x": 44,
       "y": 137,
@@ -214,7 +220,7 @@
     { "name": "Sandy Shallows", "type": "Small", "x": 40, "y": 43, "id": 61 },
     { "name": "Scorched Pass", "type": "Small", "x": 232, "y": 103, "id": 62 },
     { "name": "Scurvy Isley", "type": "Small", "x": 108, "y": 35, "id": 63 },
-    { "name": "Sea Dogs Rest", "type": "Small", "x": 21, "y": 107, "id": 64 },
+    { "name": "Sea Dog's Rest", "type": "Small", "x": 21, "y": 107, "id": 64 },
     { "name": "Shark Bait Cove", "type": "Large", "x": 73, "y": 189, "id": 65 },
     {
       "name": "Shark Fin Camp",
@@ -236,7 +242,7 @@
     { "name": "Smugglers Bay", "type": "Large", "x": 52, "y": 28, "id": 71 },
     { "name": "Snake Island", "type": "Large", "x": 103, "y": 150, "id": 72 },
     {
-      "name": "Stephens Spoils",
+      "name": "Stephen's Spoils",
       "type": "Seapost",
       "x": 114,
       "y": 150,
@@ -250,14 +256,14 @@
       "id": 74
     },
     {
-      "name": "The Crows Nest Fortress",
+      "name": "The Crow's Nest Fortress",
       "type": "Fortress",
       "x": 143,
       "y": 170,
       "id": 75
     },
     {
-      "name": "The Devils Thirst",
+      "name": "The Devil's Thirst",
       "type": "Large",
       "x": 228,
       "y": 205,
@@ -312,7 +318,7 @@
       "y": 39,
       "id": 83
     },
-    { "name": "Thieves Haven", "type": "Large", "x": 120, "y": 193, "id": 84 },
+    { "name": "Thieve's Haven", "type": "Large", "x": 120, "y": 193, "id": 84 },
     {
       "name": "Three Paces East Seapost",
       "type": "Seapost",
@@ -323,7 +329,7 @@
     { "name": "Tri-Rock Isle", "type": "Small", "x": 173, "y": 93, "id": 86 },
     { "name": "Twin Groves", "type": "Small", "x": 73, "y": 106, "id": 87 },
     {
-      "name": "Wanderers Refuge",
+      "name": "Wanderer's Refuge",
       "type": "Large",
       "x": 58,
       "y": 120,
@@ -360,6 +366,13 @@
       "y": 125,
       "id": 92,
       "uncharted": true
+    },
+    {
+      "name": "Reaper's Hideout",
+      "type": "Outpost",
+      "x": 86,
+      "y": 118,
+      "id": 93
     }
   ]
 }
