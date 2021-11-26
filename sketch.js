@@ -1,7 +1,6 @@
 // variables
 
 let islands,
-  distances,
   outposts,
   islandMap,
   bestRoute,
@@ -31,20 +30,22 @@ const BLUE = '#0096FF';
 const GREEN = '#26532B';
 const BROWN = '#964B00';
 
+// WebWorker for background route calculation
+
+const worker = new Worker('calculations.js');
+worker.onmessage = message => (bestRoute = message.data.route);
+
 // p5.js functions
 
 function preload() {
   loadJSON('data/islands.json', res => {
     islands = sortAlphabetically(res.islands, 'name');
     outposts = islands.filter(island => island.type === 'Outpost');
+    worker.postMessage({ outposts: outposts });
     islandMap = new Map(islands.map(island => [island.id, island]));
     setSelectOptions();
     return res;
   });
-  loadJSON(
-    'data/distances.json',
-    res => (distances = processDistances(res.distances))
-  );
 }
 
 function setup() {
@@ -206,7 +207,13 @@ function submitForm(event) {
   const start = startSelect.value;
   const islands = selectedIslands;
   const end = endSelect.value;
-  startCalculation(start, islands, end);
+  worker.postMessage({
+    start: start,
+    islands: islands,
+    end: end,
+    startAtOutpost: startAtOutpost,
+    endAtOutpost: endAtOutpost,
+  });
 }
 
 // drawing functions
@@ -300,96 +307,9 @@ function skull(x, y, size) {
   rect(x + teethSpacing, teethTop, teethWidth, teethHeight);
 }
 
-// calculation functions
-
-function startCalculation(start, islands, end) {
-  const routes = generateRoutes(start, islands, end);
-  [bestRoute, bestDistance] = crunch(routes);
-  console.log(bestRoute, bestDistance);
-  console.log(
-    start != end && (start != -1 || end != -1) ? 'order needed' : 'can reverse'
-  );
-}
-
-function generateRoutes(start, islands, end) {
-  if (start != -1) {
-    islands.delete(start);
-  }
-  if (end != -1) {
-    islands.delete(end);
-  }
-  let routes = new Combinatorics.Permutation(
-    Array.from(islands).map(Number)
-  ).toArray();
-  if (start != -1) {
-    routes = routes.map(route => {
-      route.unshift(parseInt(start));
-      return route;
-    });
-  }
-  if (end != -1) {
-    routes = routes.map(route => {
-      route.push(parseInt(end));
-      return route;
-    });
-  }
-  if (startAtOutpost) {
-    routes = routes
-      .map(route => outposts.map(outpost => [outpost.id, ...route]))
-      .flat();
-  }
-  if (endAtOutpost) {
-    routes = routes
-      .map(route => outposts.map(outpost => [...route, outpost.id]))
-      .flat();
-  }
-  return routes;
-}
-
-function crunch(routes) {
-  let minDistance = Infinity;
-  let minRoute = [];
-  routes.forEach(route => {
-    const d = calculateRouteDistance(route);
-    if (d < minDistance) {
-      minRoute = route;
-      minDistance = d;
-    }
-  });
-  return [minRoute, minDistance];
-}
-
-function calculateRouteDistance(route) {
-  let distance = 0;
-  for (let i = 0; i < route.length - 1; i++) {
-    distance += getDistance(
-      Math.min(route[i], route[i + 1]),
-      Math.max(route[i], route[i + 1])
-    );
-  }
-  return distance;
-}
-
 // helper functions
-
-function processDistances(array) {
-  const distances = new Map();
-  array.forEach(islandA => {
-    const temp = new Map();
-    islandA.islands.forEach(islandB => {
-      temp.set(islandB.b, islandB.distance);
-    });
-    distances.set(islandA.a, temp);
-  });
-  return distances;
-}
-
 function sortAlphabetically(array, property) {
   return array.sort((a, b) => a[property].localeCompare(b[property]));
-}
-
-function getDistance(a, b) {
-  return distances.get(a).get(b);
 }
 
 function getCanvasSize() {
