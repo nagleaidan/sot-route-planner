@@ -109,7 +109,7 @@ function draw() {
         break;
     }
   });
-  image(compassRose, 0, (height * 7) / 10, height / 4, height / 4);
+  image(compassRose, 0, (height * 7) / 10, height / 5, height / 5);
 }
 
 function windowResized() {
