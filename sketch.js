@@ -6,7 +6,8 @@ let islands,
   bestRoute,
   bestDistance,
   oldBestRoute,
-  closestIsland;
+  closestIsland,
+  compassRose;
 const selectedIslands = new Set();
 let startAtOutpost = false,
   endAtOutpost = false;
@@ -46,6 +47,7 @@ function preload() {
     setSelectOptions();
     return res;
   });
+  compassRose = loadImage('assets/compassRose.svg');
 }
 
 function setup() {
@@ -107,6 +109,7 @@ function draw() {
         break;
     }
   });
+  image(compassRose, 0, (height * 7) / 10, height / 4, height / 4);
 }
 
 function windowResized() {
