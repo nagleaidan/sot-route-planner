@@ -147,11 +147,19 @@ function mouseMoved() {
 // dom functions
 
 function setGoldenTimes() {
-  const timeString = `${utcHourToLocalTime(
-    GOLD_RUSH_START[0]
-  )} - ${utcHourToLocalTime(GOLD_RUSH_START[0] + 1)} and ${utcHourToLocalTime(
-    GOLD_RUSH_START[1]
-  )} - ${utcHourToLocalTime(GOLD_RUSH_START[1] + 1)} `;
+  const times = GOLD_RUSH_START.map(time => {
+    return {
+      timeStamp: utcHourToLocalTime(time),
+      time: time,
+    };
+  })
+    .sort((obj1, obj2) => obj1.timeStamp.localeCompare(obj2.timeStamp))
+    .map(obj => obj.time);
+  const timeString = `${utcHourToLocalTime(times[0])} - ${utcHourToLocalTime(
+    times[0] + 1
+  )} and ${utcHourToLocalTime(times[1])} - ${utcHourToLocalTime(
+    times[1] + 1
+  )} `;
   goldenSpan.textContent = timeString;
 }
 
