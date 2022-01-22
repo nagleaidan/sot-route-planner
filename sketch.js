@@ -16,20 +16,24 @@ let startAtOutpost = false,
 
 const main = document.getElementsByTagName('main')[0],
   islandName = document.getElementById('island-name'),
-  startSelect = document.getElementById('start'),
-  startOutpostButton = document.getElementById('start-outpost'),
-  islandSelect = document.getElementById('island'),
-  islandButton = document.getElementById('add-island'),
-  islandList = document.getElementById('island-list'),
-  endSelect = document.getElementById('end'),
-  endOutpostButton = document.getElementById('end-outpost'),
-  submitButton = document.getElementById('submit');
+  goldenSpan = document.getElementById('golden');
+(startSelect = document.getElementById('start')),
+  (startOutpostButton = document.getElementById('start-outpost')),
+  (islandSelect = document.getElementById('island')),
+  (islandButton = document.getElementById('add-island')),
+  (islandList = document.getElementById('island-list')),
+  (endSelect = document.getElementById('end')),
+  (endOutpostButton = document.getElementById('end-outpost')),
+  (submitButton = document.getElementById('submit'));
 
 // colors
 
 const BLUE = '#0096FF';
 const GREEN = '#26532B';
 const BROWN = '#964B00';
+
+// gold rush start times, in utc hours
+const GOLD_RUSH_START = [1, 17];
 
 // WebWorker for background route calculation
 
@@ -39,6 +43,7 @@ worker.onmessage = message => (bestRoute = message.data.route);
 // p5.js functions
 
 function preload() {
+  setGoldenTimes();
   loadJSON('data/islands.json', res => {
     islands = sortAlphabetically(res.islands, 'name');
     outposts = islands.filter(island => island.type === 'Outpost');
@@ -139,7 +144,16 @@ function mouseMoved() {
   }
 }
 
-// form functions
+// dom functions
+
+function setGoldenTimes() {
+  const timeString = `${utcHourToLocalTime(
+    GOLD_RUSH_START[0]
+  )} - ${utcHourToLocalTime(GOLD_RUSH_START[0] + 1)} and ${utcHourToLocalTime(
+    GOLD_RUSH_START[1]
+  )} - ${utcHourToLocalTime(GOLD_RUSH_START[1] + 1)} `;
+  goldenSpan.textContent = timeString;
+}
 
 function setSelectOptions() {
   islands.forEach(island => {
@@ -332,4 +346,11 @@ function arraysEqual(a, b) {
     if (a[i] !== b[i]) return false;
   }
   return true;
+}
+
+function utcHourToLocalTime(hour) {
+  return new Date(Date.UTC(0, 0, 0, hour)).toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+  });
 }
