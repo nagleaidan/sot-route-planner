@@ -1,4 +1,4 @@
-// variables
+// routing variables
 
 let islands,
   outposts,
@@ -7,24 +7,27 @@ let islands,
   bestDistance,
   oldBestRoute,
   closestIsland,
-  compassRose;
+  startAtOutpost = false,
+  endAtOutpost = false,
+  tradeDrawn = false,
+  tradeRoutes = [];
 const selectedIslands = new Set();
-let startAtOutpost = false,
-  endAtOutpost = false;
 
 // html elements
 
+let compassRose;
 const main = document.getElementsByTagName('main')[0],
   islandName = document.getElementById('island-name'),
-  goldenSpan = document.getElementById('golden');
-(startSelect = document.getElementById('start')),
-  (startOutpostButton = document.getElementById('start-outpost')),
-  (islandSelect = document.getElementById('island')),
-  (islandButton = document.getElementById('add-island')),
-  (islandList = document.getElementById('island-list')),
-  (endSelect = document.getElementById('end')),
-  (endOutpostButton = document.getElementById('end-outpost')),
-  (submitButton = document.getElementById('submit'));
+  goldenSpan = document.getElementById('golden'),
+  startSelect = document.getElementById('start'),
+  startOutpostButton = document.getElementById('start-outpost'),
+  islandSelect = document.getElementById('island'),
+  islandButton = document.getElementById('add-island'),
+  islandList = document.getElementById('island-list'),
+  endSelect = document.getElementById('end'),
+  endOutpostButton = document.getElementById('end-outpost'),
+  submitButton = document.getElementById('submit'),
+  tradeButton = document.getElementById('trade');
 
 // colors
 
@@ -33,7 +36,13 @@ const GREEN = '#26532B';
 const BROWN = '#964B00';
 
 // gold rush start times, in utc hours
+
 const GOLD_RUSH_START = [1, 17];
+
+// trade routes
+
+const tradeURL = 'https://ddc5e4l4zgom9.cloudfront.net/js/trade_routes.js';
+let tradeInfo;
 
 // WebWorker for background route calculation
 
@@ -43,7 +52,6 @@ worker.onmessage = message => (bestRoute = message.data.route);
 // p5.js functions
 
 function preload() {
-  setGoldenTimes();
   loadJSON('data/islands.json', res => {
     islands = sortAlphabetically(res.islands, 'name');
     outposts = islands.filter(island => island.type === 'Outpost');
@@ -53,12 +61,17 @@ function preload() {
     return res;
   });
   compassRose = loadImage('assets/compassRose.svg');
+  setGoldenTimes();
+  fetch(new Request(tradeURL))
+    .then(res => res.text())
+    .then(res => (tradeInfo = JSON.parse(res.substring(res.indexOf('{')))));
 }
 
 function setup() {
   background(BLUE);
   const size = getCanvasSize();
   createCanvas(size, size);
+  tradeButton.addEventListener('click', toggleTradeRoutes);
 }
 
 function draw() {
@@ -76,6 +89,20 @@ function draw() {
           ...normalizeCoords(islandB.x, islandB.y)
         );
       }
+    }
+  }
+  if (tradeRoutes.length) {
+    if (!tradeDrawn) {
+      tradeRoutes.forEach(route => {
+        console.log(route);
+        tradeDrawn = true;
+        const islandA = islandMap.get(route.start);
+        const islandB = islandMap.get(route.end);
+        arrow(
+          ...normalizeCoords(islandA.x, islandA.y),
+          ...normalizeCoords(islandB.x, islandB.y)
+        );
+      });
     }
   }
   islands.forEach(island => {
@@ -186,6 +213,7 @@ function startAnyOutpost() {
     startSelect.disabled = true;
   }
 }
+
 function endAnyOutpost() {
   if (endAtOutpost) {
     endAtOutpost = false;
@@ -241,9 +269,36 @@ function submitForm(event) {
   });
 }
 
+function toggleTradeRoutes() {
+  if (tradeRoutes.length) {
+    tradeRoutes = [];
+    bestRoute = [];
+    tradeButton.classList.remove('active');
+    tradeButton.innerHTML = 'Show Trade Routes';
+    tradeDrawn = false;
+  } else {
+    tradeButton.classList.add('active');
+    tradeButton.innerHTML = 'Hide Trade Routes';
+    for (let [outpost, info] of Object.entries(tradeInfo.routes)) {
+      tradeInfo.routes[outpost]['id'] = outposts.find(
+        o => o.name === info.outpost + ' Outpost'
+      ).id;
+    }
+    Object.values(tradeInfo.routes).forEach(outpost =>
+      tradeRoutes.push({
+        start: outpost.id,
+        end: Object.values(tradeInfo.routes).find(
+          o => o.sought_after === outpost.surplus
+        ).id,
+      })
+    );
+  }
+}
+
 // drawing functions
 
 function barrel(x, y, size) {
+  push();
   ySize = size;
   xSize = (size * 2) / 3;
   rectMode(RADIUS);
@@ -274,9 +329,11 @@ function barrel(x, y, size) {
   noStroke();
   rect(x, y - (ySize * 5) / 7, xSize * 1.2, ySize / 10, 10, 10, 0, 0);
   rect(x, y + (ySize * 5) / 7, xSize * 1.2, ySize / 10, 0, 0, 10, 10);
+  pop();
 }
 
 function fish(x, y, size) {
+  push();
   fill('darkgoldenrod');
   x += size / 4;
   noStroke();
@@ -291,9 +348,11 @@ function fish(x, y, size) {
   );
   fill(0);
   ellipse(x + (size * 2) / 5, y, size / 5, size / 5);
+  pop();
 }
 
 function heart(x, y, size) {
+  push();
   noStroke();
   fill('red');
   beginShape();
@@ -301,9 +360,11 @@ function heart(x, y, size) {
   bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);
   bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);
   endShape(CLOSE);
+  pop();
 }
 
 function skull(x, y, size) {
+  push();
   const skullWidth = (size * 6) / 5;
   const skullHeight = size;
   fill(255);
@@ -322,7 +383,6 @@ function skull(x, y, size) {
   const eyeHeight = skullHeight / 4;
   ellipse(x - eyeSpacing, y, eyeWidth, eyeHeight);
   ellipse(x + eyeSpacing, y, eyeWidth, eyeHeight);
-
   const teethWidth = skullWidth / 30;
   const teethHeight = skullHeight / 4;
   const teethTop = y + skullHeight / 2;
@@ -330,6 +390,21 @@ function skull(x, y, size) {
   rect(x - teethSpacing, teethTop, teethWidth, teethHeight);
   rect(x, teethTop, teethWidth, teethHeight);
   rect(x + teethSpacing, teethTop, teethWidth, teethHeight);
+  pop();
+}
+
+function arrow(x1, y1, x2, y2, size) {
+  push();
+  stroke('black');
+  fill('black');
+  strokeWeight(3);
+  line(x1, y1, x2, y2);
+  const angle = atan2(x1.y - x2.y, x1.x - x2.x);
+  const offset = 16;
+  translate(x2.x, x2.y);
+  rotate(angle - HALF_PI);
+  triangle(-offset * 0.5, offset, offset * 0.5, offset, 0, -offset / 2);
+  pop();
 }
 
 // helper functions
